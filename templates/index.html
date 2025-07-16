@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GCOEARA Info Assistant</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            height: 100vh;
+            color: #1e293b;
+            overflow: hidden;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            height: 100vh;
+            max-width: 1400px;
+            margin: 0 auto;
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .left-panel {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .right-panel {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            background: #1e40af;
+            border-radius: 12px;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: #64748b;
+            font-size: 1rem;
+        }
+
+        .search-container {
+            margin-bottom: 1.5rem;
+        }
+
+        .search-wrapper {
+            position: relative;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+            font-size: 1rem;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            font-size: 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            background: white;
+            transition: all 0.2s ease;
+        }
+
+        input[type="text"]:focus {
+            border-color: #1e40af;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+        }
+
+        .submit-btn {
+            background: #1e40af;
+            color: white;
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: 0.2s ease;
+        }
+
+        .submit-btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(30, 64, 175, 0.25);
+        }
+
+        .suggestions {
+            margin-top: 2rem;
+        }
+
+        .suggestions h3 {
+            font-size: 1.1rem;
+            color: #1e293b;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .suggestion-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+
+        .suggestion-tag {
+            background: #f1f5f9;
+            color: #475569;
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border: 1px solid #e2e8f0;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .suggestion-tag:hover {
+            background: #1e40af;
+            color: white;
+            border-color: #1e40af;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(30, 64, 175, 0.25);
+        }
+
+        .footer {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e2e8f0;
+            text-align: center;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .institution-name {
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .answer-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .answer-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-left: 4px solid #1e40af;
+            border-radius: 8px;
+            padding: 1.5rem;
+            width: 100%;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .answer-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+
+        .answer-icon {
+            width: 36px;
+            height: 36px;
+            background: #1e40af;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.1rem;
+        }
+
+        .answer-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .answer-content {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #374151;
+        }
+
+        .no-answer {
+            text-align: center;
+            color: #64748b;
+            font-style: italic;
+        }
+
+        .no-answer-icon {
+            font-size: 3rem;
+            color: #cbd5e1;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto 1fr;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+
+            .left-panel {
+                padding: 1.5rem;
+            }
+
+            .right-panel {
+                padding: 1.5rem;
+            }
+
+            h1 {
+                font-size: 1.75rem;
+            }
+
+            .logo {
+                width: 50px;
+                height: 50px;
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+                gap: 1rem;
+            }
+
+            .left-panel,
+            .right-panel {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .suggestion-grid {
+                grid-template-columns: 1fr;
+            }
+
+            input[type="text"] {
+                padding: 0.75rem 0.75rem 0.75rem 2.5rem;
+                font-size: 0.9rem;
+            }
+
+            .submit-btn {
+                padding: 0.75rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left-panel">
+            <div class="header">
+                <div class="logo">
+                    <i class="fas fa-university"></i>
+                </div>
+                <h1>GCOEARA Info Assistant</h1>
+                <p class="subtitle">Intelligent Information System for Campus Queries</p>
+            </div>
+
+            <form method="POST">
+                <div class="search-container">
+                    <div class="search-wrapper">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" name="query" placeholder="Ask about departments, admissions, facilities, courses..." required>
+                    </div>
+                </div>
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-paper-plane"></i>
+                    Submit Query
+                </button>
+            </form>
+
+            <div class="suggestions">
+                <h3>Frequently Asked Questions</h3>
+                <div class="suggestion-grid">
+                    <div class="suggestion-tag" onclick="fillQuery('What are the departments in GCOEARA?')">Departments</div>
+                    <div class="suggestion-tag" onclick="fillQuery('What is the admission process?')">Admissions</div>
+                    <div class="suggestion-tag" onclick="fillQuery('What facilities are available?')">Facilities</div>
+                    <div class="suggestion-tag" onclick="fillQuery('What courses are offered?')">Courses</div>
+                    <div class="suggestion-tag" onclick="fillQuery('What is the fee structure?')">Fee Structure</div>
+                    <div class="suggestion-tag" onclick="fillQuery('What are the placement statistics?')">Placements</div>
+                </div>
+            </div>
+
+            <div class="footer">
+                <p>Powered by AI • <span class="institution-name">Government College of Engineering, Avasari</span></p>
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <div class="answer-section">
+                {% if answer %}
+                <div class="answer-card">
+                    <div class="answer-header">
+                        <div class="answer-icon">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                        <div class="answer-title">Response</div>
+                    </div>
+                    <div class="answer-content">{{ answer }}</div>
+                </div>
+                {% else %}
+                <div class="no-answer">
+                    <div class="no-answer-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h3>Ask a Question</h3>
+                    <p>Submit your query to get detailed information about GCOEARA</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function fillQuery(query) {
+            const input = document.querySelector('input[name="query"]');
+            input.value = query;
+            input.focus();
+        }
+
+        // Add loading animation to button
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const btn = document.querySelector('.submit-btn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            btn.disabled = true;
+        });
+    </script>
+</body>
+</html>
